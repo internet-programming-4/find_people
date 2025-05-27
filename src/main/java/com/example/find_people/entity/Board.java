@@ -27,14 +27,13 @@ public class Board {
 
     @NotNull
     @CreationTimestamp
+    @Column(name = "created_at")
     private LocalDateTime createdAt; // 작성일시
 
     @NotNull
+    @Column(name = "end_date")
     private LocalDateTime endDate; // 마감일시
 
     @NotNull
-    private int number; // 모집인원
-
-    @NotNull
-    private String chatLink; // 채팅방 링크
+    private int number; // 모집인원 수
 }

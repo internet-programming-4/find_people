@@ -34,7 +34,6 @@ public class User {
 
     @NotNull
     @CreationTimestamp
+    @Column(name = "created_at")
     private LocalDateTime createdAt;
-
-    private LocalDateTime deletedAt;
 }
