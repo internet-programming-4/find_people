@@ -16,14 +16,13 @@ import java.time.LocalDateTime;
 @Table(name = "user")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String uid; // firebase uid
 
     @NotNull
     private String email;
 
     @NotNull
-    private String state; // 회원 상태
+    private String status; // 회원 상태
 
     @NotNull
     private String name;

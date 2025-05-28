@@ -1,6 +1,7 @@
 package com.example.find_people.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -19,11 +20,22 @@ public class Board {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
+    @NotEmpty
+    private String title;
+
+    @NotEmpty
     private String content;
 
-    @NotNull
-    private String state; // 게시글 상태
+    @ManyToOne
+    @JoinColumn(name = "writer")
+    private User writer;
+
+    @ManyToOne
+    @JoinColumn(name = "category")
+    private Category category;
+
+    @NotEmpty
+    private String status; // 게시글 상태
 
     @NotNull
     @CreationTimestamp
