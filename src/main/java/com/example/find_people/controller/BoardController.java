@@ -68,7 +68,7 @@ public class BoardController {
                             content = @Content(schema = @Schema(implementation = String.class))),
             }
     )
-    @GetMapping("")
+    @GetMapping("/{id}")
     public ResponseEntity<BoardResponse> getBoard(
             @PathVariable long id) {
         try {
@@ -120,7 +120,7 @@ public class BoardController {
             },
             security = {@SecurityRequirement(name = "accessToken")}
     )
-    @DeleteMapping("")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteBoard(
             @PathVariable Long id) {
         try {

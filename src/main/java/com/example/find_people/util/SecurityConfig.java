@@ -20,10 +20,9 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorize) -> authorize
-                        .requestMatchers("/api/admin/**", "/api/user/**", "/error/**", "/swagger-ui/**", "/v3/api-docs/**", "/api/board", "/api/board/list").permitAll()
-//                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/api/user/**", "/error/**", "/swagger-ui/**", "/v3/api-docs/**", "/api/board", "/api/board/list", "/api/admin/set-role/**").permitAll()
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
-
                 )
                 .addFilterBefore(
                         firebaseTokenFilter, UsernamePasswordAuthenticationFilter.class);
