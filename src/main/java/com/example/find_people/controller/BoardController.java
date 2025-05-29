@@ -22,7 +22,7 @@ import java.util.NoSuchElementException;
 @Tag(name = "게시글 API")
 @RequestMapping("/api/board")
 @RequiredArgsConstructor
-@RestController()
+@RestController
 public class BoardController {
 
     private final BoardService boardService;
