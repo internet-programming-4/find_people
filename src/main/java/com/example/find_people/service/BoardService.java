@@ -27,8 +27,16 @@ public class BoardService {
     // 게시글 저장
     public BoardResponse saveBoard(BoardRequest request) {
         try {
+            final String uid = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            final Optional<User> user = userRepository.findByUid(uid);
+
+            if(user.isEmpty()) {
+                throw new RuntimeException("유저가 존재하지 않습니다.");
+            }
+
             Board newBoard = new Board();
             newBoard.setTitle(request.getTitle());
+            newBoard.setWriter(user.get());
             newBoard.setContent(request.getContent());
             newBoard.setStatus(BoardStatus.ACTIVE.toString());
             newBoard.setEndDate(request.getEndDate());

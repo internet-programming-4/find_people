@@ -8,6 +8,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -32,9 +33,18 @@ public class FirebaseTokenFilter extends OncePerRequestFilter {
                 FirebaseToken decodedToken = FirebaseAuth.getInstance().verifyIdToken(token);
                 String uid = decodedToken.getUid();
 
-                // Spring Security 인증 처리
+                System.out.println("token: " + token);
+                System.out.println("uid: " + uid);
+
+                String role = (String) decodedToken.getClaims().get("role");
+
+                List<SimpleGrantedAuthority> authorities =
+                        (role != null)
+                                ? List.of(new SimpleGrantedAuthority("ROLE_" + role))
+                                : List.of(new SimpleGrantedAuthority("ROLE_USER"));
+
                 UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(uid, null, List.of());
+                        new UsernamePasswordAuthenticationToken(uid, null, authorities);
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } catch (FirebaseAuthException e) {

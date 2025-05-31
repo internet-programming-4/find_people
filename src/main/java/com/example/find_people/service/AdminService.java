@@ -1,23 +1,22 @@
 package com.example.find_people.service;
 
+import com.example.find_people.dto.BoardResponse;
+import com.example.find_people.entity.Board;
 import com.example.find_people.entity.Category;
-import com.example.find_people.entity.Post;
+import com.example.find_people.entity.enums.BoardStatus;
+import com.example.find_people.repository.BoardRepository;
 import com.example.find_people.repository.CategoryRepository;
-import com.example.find_people.repository.PostRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @Service
 public class AdminService {
 
     private final CategoryRepository categoryRepository;
-    private final PostRepository postRepository;
-
-    public AdminService(CategoryRepository categoryRepository, PostRepository postRepository) {
-        this.categoryRepository = categoryRepository;
-        this.postRepository = postRepository;
-    }
+    private final BoardRepository boardRepository;
 
     public Category addCategory(String name) {
         Category category = new Category();
@@ -40,9 +39,18 @@ public class AdminService {
     }
 
     // 게시글 비활성화
-    public Post deactivatePost(Long id) {
-        Post post = postRepository.findById(id).orElseThrow();
-        post.setActive(false);
-        return postRepository.save(post);
+    public BoardResponse deactivateBoard(Long id) {
+        Board board = boardRepository.findById(id).orElseThrow();
+        board.setStatus(BoardStatus.INACTIVE.toString());
+        boardRepository.save(board);
+        return BoardResponse.builder()
+                .id(board.getId())
+                .title(board.getTitle())
+                .content(board.getContent())
+                .writer(board.getWriter().getName())
+                .status(board.getStatus())
+                .number(board.getNumber())
+                .createdAt(board.getCreatedAt())
+                .build();
     }
 }
