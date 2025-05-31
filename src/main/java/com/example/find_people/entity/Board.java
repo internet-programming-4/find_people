@@ -37,7 +37,6 @@ public class Board {
     @NotEmpty
     private String status; // 게시글 상태
 
-    @NotNull
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt; // 작성일시

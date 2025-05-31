@@ -30,7 +30,6 @@ public class User {
 
     private String gender;
 
-    @NotNull
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;

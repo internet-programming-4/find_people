@@ -12,7 +12,6 @@ public class UserResponse {
     @NotEmpty
     private final String uid;
 
-    @NotEmpty
     private final String email;
 
     private final String name;
