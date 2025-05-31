@@ -19,13 +19,12 @@ public class User {
     private String uid; // firebase uid
 
     @NotNull
-    private String email;
-
-    @NotNull
     private String status; // 회원 상태
 
     @NotNull
     private String name;
+
+    private String email;
 
     private int age;
 
