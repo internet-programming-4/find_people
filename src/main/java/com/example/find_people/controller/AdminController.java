@@ -79,12 +79,10 @@ public class AdminController {
                             content = @Content(schema = @Schema(implementation = String.class))),
             }
     )
-    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/category/{id}")
     public void deleteCategory(@PathVariable Long id) {
         adminService.deleteCategory(id);
     }
-
     @Operation(
             summary = "카테고리 목록 조회 API",
             responses = {

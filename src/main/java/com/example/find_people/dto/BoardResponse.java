@@ -24,6 +24,12 @@ public class BoardResponse {
     @NotEmpty
     private final String writer;
 
+    @NotNull
+    private final Long categoryId;
+
+    @NotEmpty
+    private final String categoryName;
+
     private final String status;
 
     @NotNull

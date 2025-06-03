@@ -33,15 +33,20 @@ public class BoardService {
         try {
             final String uid = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             final Optional<User> user = userRepository.findByUid(uid);
-
             if(user.isEmpty()) {
                 throw new RuntimeException("유저가 존재하지 않습니다.");
+            }
+
+            final Optional<Category> category = categoryRepository.findById(request.getCategoryId());
+            if(category.isEmpty()) {
+                throw new IllegalArgumentException("카테고리가 존재하지 않습니다.");
             }
 
             Board newBoard = new Board();
             newBoard.setTitle(request.getTitle());
             newBoard.setWriter(user.get());
             newBoard.setContent(request.getContent());
+            newBoard.setCategory(category.get());
             newBoard.setStatus(BoardStatus.ACTIVE.toString());
             newBoard.setEndDate(request.getEndDate());
             newBoard.setNumber(request.getNumber());
@@ -53,6 +58,8 @@ public class BoardService {
                     .title(newBoard.getTitle())
                     .content(newBoard.getContent())
                     .writer(newBoard.getWriter().getName())
+                    .categoryId(newBoard.getCategory().getId())
+                    .categoryName(newBoard.getCategory().getName())
                     .status(BoardStatus.ACTIVE.toString())
                     .number(newBoard.getNumber())
                     .createdAt(newBoard.getCreatedAt())

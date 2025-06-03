@@ -23,4 +23,7 @@ public class BoardRequest {
 
     @NotNull
     private final int number;
+
+    @NotNull
+    private final Long categoryId;
 }
