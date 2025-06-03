@@ -40,8 +40,7 @@ public class BoardController {
                             responseCode = "400",
                             description = "게시글 등록 실패",
                             content = @Content(schema = @Schema(implementation = String.class))),
-            },
-            security = {@SecurityRequirement(name = "accessToken")}
+            }
     )
     @PostMapping("/save")
     public ResponseEntity<BoardResponse> saveBoard(
@@ -118,8 +117,7 @@ public class BoardController {
                             responseCode = "400",
                             description = "게시글 삭제 실패",
                             content = @Content(schema = @Schema(implementation = String.class))),
-            },
-            security = {@SecurityRequirement(name = "accessToken")}
+            }
     )
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteBoard(
@@ -173,8 +171,7 @@ public class BoardController {
                             responseCode = "400",
                             description = "게시글 참여 취소 실패",
                             content = @Content(schema = @Schema(implementation = String.class))),
-            },
-            security = {@SecurityRequirement(name = "accessToken")}
+            }
     )
     @PostMapping("/leave")
     public ResponseEntity<Boolean> cancelJoinBoard(

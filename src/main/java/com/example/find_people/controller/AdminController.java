@@ -83,6 +83,7 @@ public class AdminController {
     public void deleteCategory(@PathVariable Long id) {
         adminService.deleteCategory(id);
     }
+
     @Operation(
             summary = "카테고리 목록 조회 API",
             responses = {
@@ -99,7 +100,6 @@ public class AdminController {
                             content = @Content(schema = @Schema(implementation = String.class))),
             }
     )
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/categories")
     public List<Category> getAllCategories() {
         return adminService.getAllCategories();
@@ -139,7 +139,6 @@ public class AdminController {
                             content = @Content(schema = @Schema(implementation = String.class))),
             }
     )
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/set-role/{uid}")
     public ResponseEntity<String> setRole(@PathVariable String uid) {
         try {
