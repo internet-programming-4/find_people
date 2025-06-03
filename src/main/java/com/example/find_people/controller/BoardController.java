@@ -2,6 +2,7 @@ package com.example.find_people.controller;
 
 import com.example.find_people.dto.BoardRequest;
 import com.example.find_people.dto.BoardResponse;
+import com.example.find_people.dto.MainResponse;
 import com.example.find_people.service.BoardService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -187,4 +188,28 @@ public class BoardController {
         }
     }
 
+    @Operation(
+            summary = "메인페이지 카테고리, 게시글 조회 API",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "메인페이지 게시글 조회 성공",
+                            content = @Content(
+                                    array = @ArraySchema(schema = @Schema(implementation = MainResponse.class)))),
+                    @ApiResponse(
+                            responseCode = "400",
+                            description = "메인페이지 게시글 조회 실패",
+                            content = @Content(schema = @Schema(implementation = String.class))),
+            }
+    )
+    @GetMapping("/main")
+    public ResponseEntity<List<MainResponse>> getMainBoard() {
+        try {
+            return ResponseEntity.ok(boardService.getMainBoard());
+        } catch (NoSuchElementException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Item Not Found", e);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Internal Server Error", e);
+        }
+    }
 }

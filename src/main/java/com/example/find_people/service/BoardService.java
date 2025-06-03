@@ -1,11 +1,14 @@
 package com.example.find_people.service;
 import com.example.find_people.dto.BoardRequest;
 import com.example.find_people.dto.BoardResponse;
+import com.example.find_people.dto.MainResponse;
 import com.example.find_people.entity.Board;
+import com.example.find_people.entity.Category;
 import com.example.find_people.entity.Participant;
 import com.example.find_people.entity.User;
 import com.example.find_people.entity.enums.BoardStatus;
 import com.example.find_people.repository.BoardRepository;
+import com.example.find_people.repository.CategoryRepository;
 import com.example.find_people.repository.ParticipantRepository;
 import com.example.find_people.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +24,7 @@ import java.util.Optional;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    private final CategoryRepository categoryRepository;
     private final ParticipantRepository participantRepository;
     private final UserRepository userRepository;
 
@@ -164,6 +168,42 @@ public class BoardService {
             throw new RuntimeException("참여 취소 실패 ", e);
         }
     }
+
+    public List<MainResponse> getMainBoard() {
+        try {
+            List<Category> categoryList = categoryRepository.findAll();
+
+            return categoryList.stream()
+                    .map(category -> {
+                        List<Board> boards = boardRepository.findAllByCategory(category);
+                        List<BoardResponse> boardResponses = boards.stream()
+                                .map(board -> {
+                                    return BoardResponse
+                                            .builder()
+                                            .id(board.getId())
+                                            .title(board.getTitle())
+                                            .content(board.getContent())
+                                            .writer(board.getWriter().getName())
+                                            .status(board.getStatus())
+                                            .number(board.getNumber())
+                                            .createdAt(board.getCreatedAt())
+                                            .build();
+                                })
+                                .toList();
+
+                        return MainResponse.builder()
+                                .categoryId(category.getId())
+                                .categoryName(category.getName())
+                                .boardResponseList(boardResponses)
+                                .build();
+                    })
+                    .toList();
+
+        } catch (Exception e) {
+            throw new RuntimeException("메인페이지 조회 실패", e);
+        }
+    }
+
 
     // 게시글 마감 전일 경우 ture
     private boolean isBeforeEndDate(Long boardId) {
