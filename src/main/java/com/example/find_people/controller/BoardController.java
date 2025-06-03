@@ -95,9 +95,9 @@ public class BoardController {
             }
     )
     @GetMapping("/list")
-    public ResponseEntity<List<BoardResponse>> getBoardList() {
+    public ResponseEntity<List<BoardResponse>> getBoardList(@RequestParam Long categoryId) {
         try {
-            return ResponseEntity.ok(boardService.getBoardList());
+            return ResponseEntity.ok(boardService.getCartegoryBoardList(categoryId));
         } catch (NoSuchElementException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Item Not Found", e);
         } catch (Exception e) {

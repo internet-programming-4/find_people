@@ -111,6 +111,33 @@ public class BoardService {
         }
     }
 
+    // 특정 카테고리의 게시글 목록 조회
+    public List<BoardResponse> getCartegoryBoardList(Long categoryId) {
+        try {
+            Optional<Category> category = categoryRepository.findById(categoryId);
+
+            if(category.isEmpty()) {
+                throw new IllegalArgumentException("존재하지 않는 카테고리입니다.");
+            }
+
+            final List<Board> boardList = boardRepository.findAllByCategory(category.get());
+
+            return boardList.stream().map((board) -> BoardResponse.builder()
+                    .id(board.getId())
+                    .title(board.getTitle())
+                    .content(board.getContent())
+                    .writer(board.getWriter().getName())
+                    .categoryName(category.get().getName())
+                    .categoryId(categoryId)
+                    .status(board.getStatus())
+                    .number(board.getNumber())
+                    .createdAt(board.getCreatedAt())
+                    .build()).toList();
+        } catch (Exception e) {
+            throw new RuntimeException("게시글 목록 조회 실패 ", e);
+        }
+    }
+
     // 게시글 삭제
     public void deleteBoard(Long id) {
         try {
